@@ -4,11 +4,11 @@ import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
 import org.lsmr.selfcheckout.devices.listeners.BarcodeScannerListener;
 
-public class ScannerListener implements BarcodeScannerListener {
+public class ScannerController implements BarcodeScannerListener {
 
     private final ControlSoftware software;
 
-    public ScannerListener(ControlSoftware software) {
+    public ScannerController(ControlSoftware software) {
         this.software = software;
     }
 
