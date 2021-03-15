@@ -4,30 +4,26 @@ import org.lsmr.selfcheckout.devices.BarcodeScanner;
 import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
 import org.lsmr.selfcheckout.devices.listeners.BarcodeScannerListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ScannerListener implements BarcodeScannerListener {
 
-    private List<Barcode> scannedBarcodes = new ArrayList<>();
+    private final ControlSoftware software;
+
+    public ScannerListener(ControlSoftware software) {
+        this.software = software;
+    }
 
     @Override
     public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
-
+        System.out.println("A " + device.getClass().getName() + " has been enabled.");
     }
 
     @Override
     public void disabled(AbstractDevice<? extends AbstractDeviceListener> device) {
-
+        System.out.println("A " + device.getClass().getName() + " has been disabled.");
     }
 
     @Override
     public void barcodeScanned(BarcodeScanner barcodeScanner, Barcode barcode) {
-        scannedBarcodes.add(barcode);
+        this.software.updatePurchaseList(barcode);
     }
-
-    public List<Barcode> getScannedBarcodes() {
-        return scannedBarcodes;
-    }
-
 }
