@@ -14,12 +14,12 @@ public class ScannerController implements BarcodeScannerListener {
 
     @Override
     public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
-        System.out.println("A " + device.getClass().getName() + " has been enabled.");
+        System.out.print("A " + device.getClass().getSimpleName() + " has been enabled.\n");
     }
 
     @Override
     public void disabled(AbstractDevice<? extends AbstractDeviceListener> device) {
-        System.out.println("A " + device.getClass().getName() + " has been disabled.");
+        System.out.print("A " + device.getClass().getSimpleName() + " has been disabled.\n");
     }
 
     @Override
