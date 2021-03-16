@@ -13,4 +13,8 @@ public class ControlSoftware {
         Integer newCount = oldCount == null ? 1 : ++oldCount;
         purchaseList.put(barcode, newCount);
     }
+
+    public Map<Barcode, Integer> getPurchaseList() {
+        return purchaseList;
+    }
 }
