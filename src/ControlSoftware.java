@@ -17,9 +17,13 @@ public class ControlSoftware {
         purchaseList.put(barcode, newCount);
     }
 
-    public void updateTotal(Barcode barcode) {
+    public void increaseTotal(Barcode barcode) {
         BarcodedProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
         total = total.add(product.getPrice());
+    }
+
+    public void decreaseTotal(BigDecimal value) {
+        total = total.subtract(value);
     }
 
     public Map<Barcode, Integer> getPurchaseList() {
