@@ -25,5 +25,6 @@ public class ScannerController implements BarcodeScannerListener {
     @Override
     public void barcodeScanned(BarcodeScanner barcodeScanner, Barcode barcode) {
         this.software.updatePurchaseList(barcode);
+        this.software.updateTotal(barcode);
     }
 }
