@@ -8,7 +8,6 @@ import org.lsmr.selfcheckout.devices.listeners.ElectronicScaleListener;
 public class BaggingController implements ElectronicScaleListener{
 		
 	public double weight;
-	public int counter;
 	
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
@@ -21,6 +20,9 @@ public class BaggingController implements ElectronicScaleListener{
 		System.out.println("A " + device.getClass().getSimpleName() + " has been disabled.");
 		
 	}
+	public double getWeight() {
+		return this.weight;
+	}
 
 	@Override
 	public void weightChanged(ElectronicScale scale, double weightInGrams) {
@@ -28,8 +30,7 @@ public class BaggingController implements ElectronicScaleListener{
 		System.out.println("Item was added with weight:" + weightInGrams);
 		
 		weight = weightInGrams;
-		counter ++;
-		
+
 	}
 
 	@Override
