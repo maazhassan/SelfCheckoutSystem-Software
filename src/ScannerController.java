@@ -8,6 +8,10 @@ public class ScannerController implements BarcodeScannerListener {
 
     private final ControlSoftware software;
 
+    /**
+     * Creates a controller for barcode scanners.
+     * @param software The control software that this controller will be attached to.
+     */
     public ScannerController(ControlSoftware software) {
         this.software = software;
     }

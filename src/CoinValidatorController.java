@@ -9,6 +9,10 @@ public class CoinValidatorController implements CoinValidatorListener {
 
     private final ControlSoftware software;
 
+    /**
+     * Creates a controller for coin validators.
+     * @param software The control software that this controller will be attached to.
+     */
     public CoinValidatorController(ControlSoftware software) {
         this.software = software;
     }
