@@ -16,6 +16,6 @@ public class CoinTrayController implements CoinTrayListener {
 
     @Override
     public void coinAdded(CoinTray tray) {
-        System.out.println("A coin was added to the coin tray.");
+        System.out.print("A coin was added to the coin tray.\n");
     }
 }
