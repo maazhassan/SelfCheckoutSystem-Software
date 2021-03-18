@@ -15,6 +15,7 @@ public class ControlSoftware {
 
     private final Map<Barcode, Integer> purchaseList = new HashMap<>();
     private BigDecimal total = BigDecimal.ZERO;
+    private double baggingAreaWeight = 0;
 
     /**
      * Adds an barcode to the purchase list, as well as how many are being purchased.
@@ -65,5 +66,13 @@ public class ControlSoftware {
      */
     public BigDecimal getTotal() {
         return this.total;
+    }
+
+    public void setBaggingAreaWeight(double weight) {
+        this.baggingAreaWeight = weight;
+    }
+
+    public double getBaggingAreaWeight() {
+        return this.baggingAreaWeight;
     }
 }

@@ -1,5 +1,3 @@
-package org.lsmr.selfcheckout;
-
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BanknoteValidator;
 import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
@@ -7,12 +5,12 @@ import org.lsmr.selfcheckout.devices.listeners.BanknoteValidatorListener;
 
 import java.util.Currency;
 
-public class BanknoteValidatorController<ControlSoftware> implements BanknoteValidatorListener {
+public class BanknoteValidatorController implements BanknoteValidatorListener {
 
     private final ControlSoftware software;
 
     /**
-     * Creates a controller for coin validators.
+     * Creates a controller for banknote validators.
      * @param software The control software that this controller will be attached to.
      */
 
