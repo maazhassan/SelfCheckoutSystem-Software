@@ -1,12 +1,10 @@
-package org.lsmr.selfcheckout;
-
 import org.lsmr.selfcheckout.devices.AbstractDevice;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.BanknoteStorageUnit;
 import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
 import org.lsmr.selfcheckout.devices.listeners.BanknoteSlotListener;
 
-abstract class BanknotesStorageUnitController implements org.lsmr.selfcheckout.devices.listeners.BanknoteStorageUnitListener{
+public class BanknotesStorageUnitController implements org.lsmr.selfcheckout.devices.listeners.BanknoteStorageUnitListener{
 
     @Override
     public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
