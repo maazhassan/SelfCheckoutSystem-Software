@@ -1,8 +1,12 @@
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
+import org.lsmr.selfcheckout.Card;
+import org.lsmr.selfcheckout.Card.CardData;
+import org.lsmr.selfcheckout.external.CardIssuer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +20,7 @@ public class ControlSoftware {
     private final Map<Barcode, Integer> purchaseList = new HashMap<>();
     private BigDecimal total = BigDecimal.ZERO;
     private double baggingAreaWeight = 0;
+    private ArrayList<String> validMemNumbers = new ArrayList<String>();
 
     /**
      * Adds an barcode to the purchase list, as well as how many are being purchased.
@@ -50,6 +55,52 @@ public class ControlSoftware {
      */
     public void decreaseTotal(int value) {
         total = total.subtract(new BigDecimal(value));
+    }
+    
+    /**
+     * Creating a database of valid membership card numbers
+     */
+    
+    public void registerMembershipNumber() {
+    	for(int i = 0; i <= 10; i++) {
+    		validMemNumbers.add(String.valueOf(i));
+    	}
+    }
+    
+    /**
+     * Sees if the card is a membership card 
+     * @param card Data of the card that is being used
+     */
+    
+    public boolean scanMembershipCard(String number) {
+    	for (int i = 0; i < (validMemNumbers.size() - 1); i++){
+    		String validNumber = validMemNumbers.get(i);
+    		if(validNumber.equals(number)) {
+    			discountForMember();
+    			return true;
+    		}
+    		
+    	}
+    	return false;
+    }
+    
+    /**
+     *  Give the member a 10% discount
+     */
+    
+    public void discountForMember() {
+    	double discount = 0.1;
+		BigDecimal subFromTotal = total.multiply(new BigDecimal(discount));
+		total = total.subtract(subFromTotal);
+    }
+    
+    
+    /**
+     * check to see if the customer finished adding items
+     */
+    
+    public void finishAddingItems() {
+    	
     }
 
     /**
