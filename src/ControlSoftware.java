@@ -1,4 +1,6 @@
 import org.lsmr.selfcheckout.Barcode;
+import org.lsmr.selfcheckout.Card.CardData;
+import org.lsmr.selfcheckout.external.CardIssuer;
 import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
@@ -19,6 +21,7 @@ public class ControlSoftware {
     private BigDecimal total = BigDecimal.ZERO;
     private double baggingAreaWeight = 0;
     private ArrayList<String> validMemNumbers = new ArrayList<String>();
+    private final ArrayList<CardIssuer> issuers = new ArrayList<>();
 
     /**
      * Adds an barcode to the purchase list, as well as how many are being purchased.
@@ -136,11 +139,44 @@ public class ControlSoftware {
         return this.total;
     }
 
+    /**
+     * Sets the weight of the bagging area.
+     * @param weight The weight to set.
+     */
     public void setBaggingAreaWeight(double weight) {
         this.baggingAreaWeight = weight;
     }
 
+    /**
+     * Gets the weight of the bagging area.
+     * @return The weight of the bagging area.
+     */
     public double getBaggingAreaWeight() {
         return this.baggingAreaWeight;
+    }
+
+    /**
+     * Registers the indicated card issuer with this control software so they can communicate.
+     * @param issuer The card issuer to register.
+     */
+    public void registerCardIssuer(CardIssuer issuer) {
+        this.issuers.add(issuer);
+    }
+
+    /**
+     * Parses the data returned from when a card is read, updating the total if it is valid.
+     * @param data The data to parse.
+     */
+    public void parseCardData(CardData data) {
+        for (CardIssuer issuer : issuers) {
+            int holdNumber = issuer.authorizeHold(data.getNumber(), total);
+            if (holdNumber != 1) {
+                if (issuer.postTransaction(data.getNumber(), holdNumber, total)) {
+                    decreaseTotal(total);
+                    return;
+                }
+            }
+        }
+        System.out.println("Transaction failed.");
     }
 }
