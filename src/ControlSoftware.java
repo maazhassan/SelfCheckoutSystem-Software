@@ -1,9 +1,6 @@
 import org.lsmr.selfcheckout.Barcode;
 import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
-import org.lsmr.selfcheckout.Card;
-import org.lsmr.selfcheckout.Card.CardData;
-import org.lsmr.selfcheckout.external.CardIssuer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,6 +37,8 @@ public class ControlSoftware {
         BarcodedProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
         total = total.add(product.getPrice());
     }
+    
+    
 
     /**
      * Decreases the total the user has to pay by a certain amount. This should be used for coins.
@@ -68,12 +67,12 @@ public class ControlSoftware {
     }
     
     /**
-     * Sees if the card is a membership card 
+     * Sees if the card is a membership card and if it is the customer gets a discount
      * @param card Data of the card that is being used
      */
     
     public boolean scanMembershipCard(String number) {
-    	for (int i = 0; i < (validMemNumbers.size() - 1); i++){
+    	for (int i = 0; i < validMemNumbers.size(); i++){
     		String validNumber = validMemNumbers.get(i);
     		if(validNumber.equals(number)) {
     			discountForMember();
@@ -90,17 +89,18 @@ public class ControlSoftware {
     
     public void discountForMember() {
     	double discount = 0.1;
-		BigDecimal subFromTotal = total.multiply(new BigDecimal(discount));
-		total = total.subtract(subFromTotal);
+		BigDecimal roughNumber = total.multiply(new BigDecimal(discount));
+		double subFromTotal = roughNumber.doubleValue();
+		total = total.subtract(new BigDecimal(subFromTotal));
     }
     
     
     /**
-     * check to see if the customer finished adding items
+     * The customer is finished adding items and the total is displayed
      */
     
-    public void finishAddingItems() {
-    	
+    public String finishAddingItems() {
+    	return "The total for all of your items are " + getTotal();
     }
 
     /**
