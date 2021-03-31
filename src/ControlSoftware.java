@@ -3,6 +3,7 @@ import org.lsmr.selfcheckout.Card.CardData;
 import org.lsmr.selfcheckout.external.CardIssuer;
 import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
+import org.lsmr.selfcheckout.Item;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -20,8 +21,11 @@ public class ControlSoftware {
     private final Map<Barcode, Integer> purchaseList = new HashMap<>();
     private BigDecimal total = BigDecimal.ZERO;
     private double baggingAreaWeight = 0;
+    private double previousWeight = 0;
     private  final ArrayList<String> validMemNumbers = new ArrayList<>();
     private final ArrayList<CardIssuer> issuers = new ArrayList<>();
+    private final ArrayList<Item> baggedItems = new ArrayList<>();
+
 
     /**
      * Adds an barcode to the purchase list, as well as how many are being purchased.
@@ -137,7 +141,10 @@ public class ControlSoftware {
     public BigDecimal getTotal() {
         return this.total;
     }
-
+	
+    public ArrayList<Item> getBaggedList() {
+    	return baggedItems;
+    }
     /**
      * Sets the weight of the bagging area.
      * @param weight The weight to set.
@@ -150,8 +157,45 @@ public class ControlSoftware {
      * Gets the weight of the bagging area.
      * @return The weight of the bagging area.
      */
+    
     public double getBaggingAreaWeight() {
         return this.baggingAreaWeight;
+    }
+    /**
+     * Gets the last weight of the bagging area.
+     * @return The weight of the bagging area.
+     */
+    public double getPreviousWeight() {
+    	return this.previousWeight;
+    }
+	
+	/**
+     * Sets the weight of the bagging area.
+     * @param weight The weight to set.
+     */
+    
+    public void setPreviousWeight(double weight) {
+    	this.previousWeight = weight;
+    }
+    
+    /**
+     * increases the weight of the bagging area.
+     * @return The weight of the bagging area.
+     */
+	
+    public void increaseWeight(double weight) {
+    	setPreviousWeight(this.baggingAreaWeight);
+    	this.baggingAreaWeight +=weight;
+    }
+    
+    /**
+     * decreases the weight of the bagging area.
+     * @return The weight of the bagging area.
+     */
+    
+    public void decreaseWeight(double weight) {
+    	setPreviousWeight(this.baggingAreaWeight);
+    	this.baggingAreaWeight -= weight;
     }
 
     /**
@@ -177,5 +221,28 @@ public class ControlSoftware {
             }
         }
         System.out.println("Transaction failed.");
+    }
+	
+	
+	
+    public void addOwnBag(double bagWeight) {
+    	this.increaseWeight(bagWeight);    	
+    	
+    }
+    
+    public void addItem(Item baggedItem) {
+    	this.increaseWeight(baggedItem.getWeight());
+    	baggedItems.add(baggedItem);
+    }
+    
+    public ArrayList<Item> getBaggedList() {
+    	return baggedItems;
+    }
+    
+    public Boolean verifyBagging() {
+    	if (previousWeight == baggingAreaWeight) {
+    		return false;
+    	}
+    	return true;
     }
 }
