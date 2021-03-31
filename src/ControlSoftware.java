@@ -20,7 +20,7 @@ public class ControlSoftware {
     private final Map<Barcode, Integer> purchaseList = new HashMap<>();
     private BigDecimal total = BigDecimal.ZERO;
     private double baggingAreaWeight = 0;
-    private ArrayList<String> validMemNumbers = new ArrayList<String>();
+    private  final ArrayList<String> validMemNumbers = new ArrayList<>();
     private final ArrayList<CardIssuer> issuers = new ArrayList<>();
 
     /**
@@ -72,18 +72,17 @@ public class ControlSoftware {
     
     /**
      * Sees if the card is a membership card and if it is the customer gets a discount
-     * @param card Data of the card that is being used
+     * @param number The card number of the membership card
      */
     
     public boolean scanMembershipCard(String number) {
-    	for (int i = 0; i < validMemNumbers.size(); i++){
-    		String validNumber = validMemNumbers.get(i);
-    		if(validNumber.equals(number)) {
-    			discountForMember();
-    			return true;
-    		}
-    		
-    	}
+        for (String validNumber : validMemNumbers) {
+            if (validNumber.equals(number)) {
+                discountForMember();
+                return true;
+            }
+
+        }
     	return false;
     }
     
@@ -97,17 +96,17 @@ public class ControlSoftware {
 		double subFromTotal = roughNumber.doubleValue();
 		total = total.subtract(new BigDecimal(subFromTotal));
 		
-		if((new BigDecimal(0).compareTo(total) == -1) && (new BigDecimal(9).compareTo(total) == 1)) {
+		if((new BigDecimal(0).compareTo(total) < 0) && (new BigDecimal(9).compareTo(total) > 0)) {
 			MathContext roundPrecision = new MathContext(3);
 			total = total.round(roundPrecision);
 		}
 		
-		if((new BigDecimal(10).compareTo(total) == -1) && (new BigDecimal(99).compareTo(total) == 1)) {
+		if((new BigDecimal(10).compareTo(total) < 0) && (new BigDecimal(99).compareTo(total) > 0)) {
 			MathContext roundPrecision = new MathContext(4);
 			total = total.round(roundPrecision);
 		}
 		
-		if((new BigDecimal(100).compareTo(total) == -1) && (new BigDecimal(999).compareTo(total) == 1)) {
+		if((new BigDecimal(100).compareTo(total) < 0) && (new BigDecimal(999).compareTo(total) > 0)) {
 			MathContext roundPrecision = new MathContext(5);
 			total = total.round(roundPrecision);
 		}
