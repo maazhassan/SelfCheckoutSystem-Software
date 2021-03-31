@@ -5,6 +5,7 @@ import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class ControlSoftware {
     private final Map<Barcode, Integer> purchaseList = new HashMap<>();
     private BigDecimal total = BigDecimal.ZERO;
     private double baggingAreaWeight = 0;
+    private ArrayList<String> validMemNumbers = new ArrayList<String>();
     private final ArrayList<CardIssuer> issuers = new ArrayList<>();
 
     /**
@@ -39,6 +41,8 @@ public class ControlSoftware {
         BarcodedProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
         total = total.add(product.getPrice());
     }
+    
+    
 
     /**
      * Decreases the total the user has to pay by a certain amount. This should be used for coins.
@@ -54,6 +58,69 @@ public class ControlSoftware {
      */
     public void decreaseTotal(int value) {
         total = total.subtract(new BigDecimal(value));
+    }
+    
+    /**
+     * Creating a database of valid membership card numbers
+     */
+    
+    public void registerMembershipNumber() {
+    	for(int i = 0; i <= 10; i++) {
+    		validMemNumbers.add(String.valueOf(i));
+    	}
+    }
+    
+    /**
+     * Sees if the card is a membership card and if it is the customer gets a discount
+     * @param card Data of the card that is being used
+     */
+    
+    public boolean scanMembershipCard(String number) {
+    	for (int i = 0; i < validMemNumbers.size(); i++){
+    		String validNumber = validMemNumbers.get(i);
+    		if(validNumber.equals(number)) {
+    			discountForMember();
+    			return true;
+    		}
+    		
+    	}
+    	return false;
+    }
+    
+    /**
+     *  Give the member a 10% discount
+     */
+    
+    public void discountForMember() {
+    	double discount = 0.1;
+		BigDecimal roughNumber = total.multiply(new BigDecimal(discount));
+		double subFromTotal = roughNumber.doubleValue();
+		total = total.subtract(new BigDecimal(subFromTotal));
+		
+		if((new BigDecimal(0).compareTo(total) == -1) && (new BigDecimal(9).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(3);
+			total = total.round(roundPrecision);
+		}
+		
+		if((new BigDecimal(10).compareTo(total) == -1) && (new BigDecimal(99).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(4);
+			total = total.round(roundPrecision);
+		}
+		
+		if((new BigDecimal(100).compareTo(total) == -1) && (new BigDecimal(999).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(5);
+			total = total.round(roundPrecision);
+		}
+		
+    }
+    
+    
+    /**
+     * The customer is finished adding items and the total is displayed
+     */
+    
+    public String finishAddingItems() {
+    	return "The total for all of your items are " + getTotal();
     }
 
     /**
