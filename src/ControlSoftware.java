@@ -3,6 +3,7 @@ import org.lsmr.selfcheckout.external.ProductDatabases;
 import org.lsmr.selfcheckout.products.BarcodedProduct;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,6 +93,22 @@ public class ControlSoftware {
 		BigDecimal roughNumber = total.multiply(new BigDecimal(discount));
 		double subFromTotal = roughNumber.doubleValue();
 		total = total.subtract(new BigDecimal(subFromTotal));
+		
+		if((new BigDecimal(0).compareTo(total) == -1) && (new BigDecimal(9).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(3);
+			total = total.round(roundPrecision);
+		}
+		
+		if((new BigDecimal(10).compareTo(total) == -1) && (new BigDecimal(99).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(4);
+			total = total.round(roundPrecision);
+		}
+		
+		if((new BigDecimal(100).compareTo(total) == -1) && (new BigDecimal(999).compareTo(total) == 1)) {
+			MathContext roundPrecision = new MathContext(5);
+			total = total.round(roundPrecision);
+		}
+		
     }
     
     
