@@ -36,8 +36,13 @@ public class BaggingController implements ElectronicScaleListener{
 
 	@Override
 	public void outOfOverload(ElectronicScale scale) {
-		System.out.print("Please continue to scan items.");
+		System.out.print("Please continue to scan items.\n");
 		
+	}
+	public void fails() {
+		if(this.software.verifyBagging() == false) {
+			System.out.print("Please add item to bagging area.\n");
+		}
 	}
 
 }
