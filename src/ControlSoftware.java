@@ -141,10 +141,7 @@ public class ControlSoftware {
     public BigDecimal getTotal() {
         return this.total;
     }
-	
-    public ArrayList<Item> getBaggedList() {
-    	return baggedItems;
-    }
+
     /**
      * Sets the weight of the bagging area.
      * @param weight The weight to set.
@@ -179,8 +176,7 @@ public class ControlSoftware {
     }
     
     /**
-     * increases the weight of the bagging area.
-     * @return The weight of the bagging area.
+     * Increases the weight of the bagging area.
      */
 	
     public void increaseWeight(double weight) {
@@ -189,8 +185,7 @@ public class ControlSoftware {
     }
     
     /**
-     * decreases the weight of the bagging area.
-     * @return The weight of the bagging area.
+     * Decreases the weight of the bagging area.
      */
     
     public void decreaseWeight(double weight) {
@@ -223,8 +218,7 @@ public class ControlSoftware {
         System.out.println("Transaction failed.");
     }
 	
-	
-	
+
     public void addOwnBag(double bagWeight) {
     	this.increaseWeight(bagWeight);    	
     	
@@ -240,9 +234,6 @@ public class ControlSoftware {
     }
     
     public Boolean verifyBagging() {
-    	if (previousWeight == baggingAreaWeight) {
-    		return false;
-    	}
-    	return true;
+        return previousWeight != baggingAreaWeight;
     }
 }
